@@ -1,0 +1,331 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Strategies xmlns="http://www.fixprotocol.org/FIXatdl-1-1/Core" xmlns:val="http://www.fixprotocol.org/FIXatdl-1-1/Validation" xmlns:lay="http://www.fixprotocol.org/FIXatdl-1-1/Layout" xmlns:flow="http://www.fixprotocol.org/FIXatdl-1-1/Flow" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.fixprotocol.org/FIXatdl-1-1/Core fixatdl-core-1-1.xsd" strategyIdentifierTag="11100" versionIdentifierTag="11200">
+
+<Strategy name="VWAP" uiRep="VWAP" wireValue="7755" version="1.1.2" fixMsgType="D">
+	<Description>
+	</Description>
+	<Regions>
+		<Region name="AsiaPacificJapan" inclusion="Include"/>
+	</Regions>
+	<SecurityTypes>
+		<SecurityType name="CS" inclusion="Include"/>
+	</SecurityTypes>
+
+	<Parameter name="TargetSubID" xsi:type="String_t" use="required" mutableOnCxlRpl="false" revertOnCxlRpl="true" fixTag="57" definedByFIX="true" constValue="TEST">
+		<Description>
+		</Description>
+	</Parameter>
+
+	<Parameter name="HandInst" xsi:type="Char_t" use="required" mutableOnCxlRpl="false" revertOnCxlRpl="true" fixTag="21" definedByFIX="true" constValue="1">
+		<Description>
+		</Description>
+	</Parameter>
+
+	<Parameter name="TimeInForce" xsi:type="Char_t" use="required" mutableOnCxlRpl="true" revertOnCxlRpl="true" fixTag="59" definedByFIX="true">
+		<Description>
+		</Description>
+		<EnumPair enumID="e_Day" wireValue="0">
+			<Description>
+			</Description>
+		</EnumPair>
+		<EnumPair enumID="e_AtTheOpen" wireValue="2">
+			<Description>
+			</Description>
+		</EnumPair>
+		<EnumPair enumID="e_ImmediateOrCancel" wireValue="3">
+			<Description>
+			</Description>
+		</EnumPair>
+		<EnumPair enumID="e_AtTheClose" wireValue="7">
+			<Description>
+			</Description>
+		</EnumPair>
+	</Parameter>
+
+	<Parameter name="Dummy" xsi:type="Char_t" use="optional" mutableOnCxlRpl="true" revertOnCxlRpl="false" fixTag="9234" definedByFIX="false">
+		<Description>
+		</Description>
+		<EnumPair enumID="e_Yes" wireValue="Y">
+			<Description>
+			</Description>
+		</EnumPair>
+		<EnumPair enumID="e_No" wireValue="">
+			<Description>
+			</Description>
+		</EnumPair>
+	</Parameter>
+
+
+	<Parameter name="OrdType" xsi:type="Char_t" use="required" mutableOnCxlRpl="true" revertOnCxlRpl="true" fixTag="40" definedByFIX="true">
+		<Description>
+		</Description>
+		<EnumPair enumID="e_Limit" wireValue="2">
+			<Description>>
+			</Description>
+		</EnumPair>
+		<EnumPair enumID="e_Market" wireValue="1">
+			<Description>
+			</Description>
+		</EnumPair>
+		<EnumPair enumID="e_MarketOnClose" wireValue="5">
+			<Description>
+			</Description>
+		</EnumPair>
+		<EnumPair enumID="e_LimitOnClose" wireValue="B">
+			<Description>
+			</Description>
+		</EnumPair>
+		<EnumPair enumID="e_Funari" wireValue="I">
+			<Description>
+			</Description>
+		</EnumPair>
+	</Parameter>
+
+	<Parameter name="EffectiveTime" xsi:type="UTCTimestamp_t" use="optional" mutableOnCxlRpl="true" revertOnCxlRpl="false" fixTag="168" definedByFIX="true">
+		<Description>
+		</Description>
+	</Parameter>
+
+	<Parameter name="ExpireTime" xsi:type="UTCTimestamp_t" use="optional" mutableOnCxlRpl="true" revertOnCxlRpl="false" fixTag="126" definedByFIX="true">
+		<Description>
+		</Description>
+	</Parameter>
+
+	<Parameter name="ExecInst" xsi:type="Char_t" use="optional" mutableOnCxlRpl="true" revertOnCxlRpl="false" fixTag="18" definedByFIX="true">
+		<Description>
+		</Description>
+		<EnumPair enumID="e_None" wireValue="">
+			<Description>
+			</Description>
+		</EnumPair>
+		<EnumPair enumID="e_OKToCross" wireValue="B">
+			<Description>
+			</Description>
+		</EnumPair>
+		<EnumPair enumID="e_NoCross" wireValue="A">
+			<Description>
+			</Description>
+		</EnumPair>
+	</Parameter>
+
+	<Parameter name="MaxFloor" xsi:type="Qty_t" use="optional" mutableOnCxlRpl="true" revertOnCxlRpl="false" fixTag="111" definedByFIX="true" minValue="0">
+		<Description>
+		</Description>
+	</Parameter>
+
+	<Parameter name="Price" xsi:type="Price_t" use="optional" mutableOnCxlRpl="true" revertOnCxlRpl="false" fixTag="44" definedByFIX="true" minValue="0">
+		<Description>
+		</Description>
+	</Parameter>
+
+
+	<lay:StrategyLayout>
+		<lay:StrategyPanel orientation="VERTICAL" border="None" collapsible="false">
+
+			<lay:StrategyPanel orientation="VERTICAL" border="Line" title="Optional Parameters" collapsible="false">
+				<lay:Control ID="c_Dummy" xsi:type="lay:CheckBox_t" parameterRef="Dummy" label="Dummy"  tooltip="Dummy" uncheckedEnumRef="e_No" checkedEnumRef="e_Yes" >
+				</lay:Control>
+
+				<lay:Control ID="c_ExecInst" xsi:type="lay:CheckBox_t" parameterRef="ExecInst" label="Dark Access" tooltip="Try to execute as block in dark"  uncheckedEnumRef="e_NoCross" checkedEnumRef="e_OKToCross" initValue="true" >
+				</lay:Control>
+				</lay:StrategyPanel>
+
+			<lay:StrategyPanel collapsible="false" border="Line" orientation="VERTICAL">
+                    	<lay:StrategyPanel collapsible="false" orientation="HORIZONTAL" border="None">
+				<lay:Control ID="c_EffectiveTime" xsi:type="lay:Clock_t" parameterRef="EffectiveTime" tooltip="Specify Start Time" label="Start Time">
+				</lay:Control>
+                       </lay:StrategyPanel>
+                    <lay:StrategyPanel border="None" collapsible="false" orientation="HORIZONTAL">
+				<lay:Control ID="c_ExpireTime" xsi:type="lay:Clock_t" parameterRef="ExpireTime" tooltip="Specify End Time" label="End Time">
+				</lay:Control>
+                    </lay:StrategyPanel>
+                </lay:StrategyPanel>			
+		</lay:StrategyPanel>
+
+	</lay:StrategyLayout>
+	<val:StrategyEdit errorMessage="OrdType is invalid">
+		<val:Edit logicOperator="OR">
+			<val:Edit field="FIX_OrdType" value="1" operator="EQ"/>
+			<val:Edit field="FIX_OrdType" value="2" operator="EQ"/>
+			<val:Edit field="FIX_OrdType" value="I" operator="EQ"/>
+			<val:Edit field="FIX_OrdType" value="5" operator="EQ"/>
+			<val:Edit field="FIX_OrdType" value="B" operator="EQ"/>
+		</val:Edit>
+	</val:StrategyEdit> 
+	<val:StrategyEdit errorMessage="End Time should be later than Start Time">
+		<val:Edit logicOperator="OR">
+			<val:Edit field="EffectiveTime" operator="NX"/>
+			<val:Edit field="ExpireTime" operator="NX"/>
+			<val:Edit logicOperator="AND">
+				<val:Edit field="EffectiveTime" operator="EX"/>
+				<val:Edit field="ExpireTime" operator="EX"/>
+				<val:Edit field="ExpireTime" operator="GT" field2="EffectiveTime"/>
+			</val:Edit>
+		</val:Edit>
+	</val:StrategyEdit>
+</Strategy>
+
+<Strategy name="TWAP" uiRep="TWAP" wireValue="7756" version="1.1.2" fixMsgType="D">
+	<Description>
+	</Description>
+	<SecurityTypes>
+		<SecurityType name="CS" inclusion="Include"/>
+	</SecurityTypes>
+
+	<Parameter name="TargetSubID" xsi:type="String_t" use="required" mutableOnCxlRpl="false" revertOnCxlRpl="true" fixTag="57" definedByFIX="true" constValue="TEST">
+		<Description>
+		</Description>
+	</Parameter>
+
+	<Parameter name="HandInst" xsi:type="Char_t" use="required" mutableOnCxlRpl="false" revertOnCxlRpl="true" fixTag="21" definedByFIX="true" constValue="1">
+		<Description>
+		</Description>
+	</Parameter>
+
+	<Parameter name="TimeInForce" xsi:type="Char_t" use="required" mutableOnCxlRpl="true" revertOnCxlRpl="true" fixTag="59" definedByFIX="true">
+		<Description>
+		</Description>
+		<EnumPair enumID="e_Day" wireValue="0">
+			<Description>
+			</Description>
+		</EnumPair>
+		<EnumPair enumID="e_AtTheOpen" wireValue="2">
+			<Description>
+			</Description>
+		</EnumPair>
+		<EnumPair enumID="e_ImmediateOrCancel" wireValue="3">
+			<Description>
+			</Description>
+		</EnumPair>
+		<EnumPair enumID="e_AtTheClose" wireValue="7">
+			<Description>
+			</Description>
+		</EnumPair>
+	</Parameter>
+
+	<Parameter name="Dummy" xsi:type="Char_t" use="optional" mutableOnCxlRpl="true" revertOnCxlRpl="false" fixTag="9234" definedByFIX="false">
+		<Description>
+		</Description>
+		<EnumPair enumID="e_Yes" wireValue="Y">
+			<Description>
+			</Description>
+		</EnumPair>
+		<EnumPair enumID="e_No" wireValue="">
+			<Description>
+			</Description>
+		</EnumPair>
+	</Parameter>
+
+
+	<Parameter name="OrdType" xsi:type="Char_t" use="required" mutableOnCxlRpl="true" revertOnCxlRpl="true" fixTag="40" definedByFIX="true">
+		<Description>
+		</Description>
+		<EnumPair enumID="e_Limit" wireValue="2">
+			<Description>>
+			</Description>
+		</EnumPair>
+		<EnumPair enumID="e_Market" wireValue="1">
+			<Description>
+			</Description>
+		</EnumPair>
+		<EnumPair enumID="e_MarketOnClose" wireValue="5">
+			<Description>
+			</Description>
+		</EnumPair>
+		<EnumPair enumID="e_LimitOnClose" wireValue="B">
+			<Description>
+			</Description>
+		</EnumPair>
+		<EnumPair enumID="e_Funari" wireValue="I">
+			<Description>
+			</Description>
+		</EnumPair>
+	</Parameter>
+
+	<Parameter name="EffectiveTime" xsi:type="UTCTimestamp_t" use="optional" mutableOnCxlRpl="true" revertOnCxlRpl="false" fixTag="168" definedByFIX="true">
+		<Description>
+		</Description>
+	</Parameter>
+
+	<Parameter name="ExpireTime" xsi:type="UTCTimestamp_t" use="optional" mutableOnCxlRpl="true" revertOnCxlRpl="false" fixTag="126" definedByFIX="true">
+		<Description>
+		</Description>
+	</Parameter>
+
+	<Parameter name="ExecInst" xsi:type="Char_t" use="optional" mutableOnCxlRpl="true" revertOnCxlRpl="false" fixTag="18" definedByFIX="true">
+		<Description>
+		</Description>
+		<EnumPair enumID="e_None" wireValue="">
+			<Description>
+			</Description>
+		</EnumPair>
+		<EnumPair enumID="e_OKToCross" wireValue="B">
+			<Description>
+			</Description>
+		</EnumPair>
+		<EnumPair enumID="e_NoCross" wireValue="A">
+			<Description>
+			</Description>
+		</EnumPair>
+	</Parameter>
+
+	<Parameter name="MaxFloor" xsi:type="Qty_t" use="optional" mutableOnCxlRpl="true" revertOnCxlRpl="false" fixTag="111" definedByFIX="true" minValue="0">
+		<Description>
+		</Description>
+	</Parameter>
+
+	<Parameter name="Price" xsi:type="Price_t" use="optional" mutableOnCxlRpl="true" revertOnCxlRpl="false" fixTag="44" definedByFIX="true" minValue="0">
+		<Description>
+		</Description>
+	</Parameter>
+
+
+	<lay:StrategyLayout>
+		<lay:StrategyPanel orientation="VERTICAL" border="None" collapsible="false">
+
+			<lay:StrategyPanel orientation="VERTICAL" border="Line" title="Optional Parameters" collapsible="false">
+				<lay:Control ID="c_Dummy" xsi:type="lay:CheckBox_t" parameterRef="Dummy" label="Dummy"  tooltip="Dummy" uncheckedEnumRef="e_No" checkedEnumRef="e_Yes" >
+				</lay:Control>
+
+				<lay:Control ID="c_ExecInst" xsi:type="lay:CheckBox_t" parameterRef="ExecInst" label="Dark Access" tooltip="Try to execute as block in dark"  uncheckedEnumRef="e_NoCross" checkedEnumRef="e_OKToCross" initValue="true" >
+				</lay:Control>
+				</lay:StrategyPanel>
+
+			<lay:StrategyPanel collapsible="false" border="Line" orientation="VERTICAL">
+                    	<lay:StrategyPanel collapsible="false" orientation="HORIZONTAL" border="None">
+				<lay:Control ID="c_EffectiveTime" xsi:type="lay:Clock_t" parameterRef="EffectiveTime" tooltip="Specify Start Time" label="Start Time">
+				</lay:Control>
+                       </lay:StrategyPanel>
+                    <lay:StrategyPanel border="None" collapsible="false" orientation="HORIZONTAL">
+				<lay:Control ID="c_ExpireTime" xsi:type="lay:Clock_t" parameterRef="ExpireTime" tooltip="Specify End Time" label="End Time">
+				</lay:Control>
+                    </lay:StrategyPanel>
+                </lay:StrategyPanel>			
+		</lay:StrategyPanel>
+
+	</lay:StrategyLayout>
+	<val:StrategyEdit errorMessage="OrdType is invalid">
+		<val:Edit logicOperator="OR">
+			<val:Edit field="FIX_OrdType" value="1" operator="EQ"/>
+			<val:Edit field="FIX_OrdType" value="2" operator="EQ"/>
+			<val:Edit field="FIX_OrdType" value="I" operator="EQ"/>
+			<val:Edit field="FIX_OrdType" value="5" operator="EQ"/>
+			<val:Edit field="FIX_OrdType" value="B" operator="EQ"/>
+		</val:Edit>
+	</val:StrategyEdit> 
+	<val:StrategyEdit errorMessage="End Time should be later than Start Time">
+		<val:Edit logicOperator="OR">
+			<val:Edit field="EffectiveTime" operator="NX"/>
+			<val:Edit field="ExpireTime" operator="NX"/>
+			<val:Edit logicOperator="AND">
+				<val:Edit field="EffectiveTime" operator="EX"/>
+				<val:Edit field="ExpireTime" operator="EX"/>
+				<val:Edit field="ExpireTime" operator="GT" field2="EffectiveTime"/>
+			</val:Edit>
+		</val:Edit>
+	</val:StrategyEdit>
+</Strategy>
+
+
+</Strategies>
